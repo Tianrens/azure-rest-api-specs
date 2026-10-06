@@ -50,7 +50,17 @@ interface RuleSets {
   /**
    * Creates or update a batch rule set within the specified profile along with the rules associate to it.
    */
+  #suppress "@azure-tools/typespec-azure-resource-manager/arm-put-operation-response-codes" "Updating an existing batch mode rule set is processed asynchronously and returns 202 Accepted, consistent with the other Microsoft.Cdn PUT operations."
   @added(Versions.v2025_12_01)
+  @returnTypeChangedFrom(
+    Versions.v2026_10_01,
+
+      | ArmResponse<RuleSet>
+      | (ArmCreatedResponse<RuleSet> &
+          ArmAsyncOperationHeader<FinalResult = RuleSet> &
+          ArmLroLocationHeader<FinalResult = RuleSet>)
+      | ErrorResponse
+  )
   @sharedRoute
   @Azure.Core.useFinalStateVia("azure-async-operation")
   create is Azure.ResourceManager.Legacy.CreateOrReplaceAsync<
@@ -61,6 +71,9 @@ interface RuleSets {
       | (ArmCreatedResponse<RuleSet> &
           ArmAsyncOperationHeader<FinalResult = RuleSet> &
           ArmLroLocationHeader<FinalResult = RuleSet>)
+      | ArmAcceptedLroResponse<LroHeaders = ArmAsyncOperationHeader<FinalResult = RuleSet> &
+          ArmLroLocationHeader<FinalResult = RuleSet> &
+          Azure.Core.Foundations.RetryAfterHeader>
       | ErrorResponse
   >;
 
