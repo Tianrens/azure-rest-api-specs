@@ -31,6 +31,11 @@
           "provisioningState": "Succeeded"
         }
       }
+    },
+    "202": {
+      "headers": {
+        "azure-asyncoperation": "https://management.azure.com/subscriptions/subid/resourcegroups/resourceGroupName/providers/Microsoft.Cdn/operationresults/operationId?api-version=2026-10-01"
+      }
     }
   },
   "operationId": "RuleSets_Create",
